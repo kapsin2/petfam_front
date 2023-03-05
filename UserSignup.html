@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <title>Pet Sitting - Free Bootstrap 4 Template by Colorlib</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+ 
+    <link rel="stylesheet" href="css/animate.css">
+    
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+
+
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="css/jquery.timepicker.css">
+
+    <link rel="stylesheet" href="css/flaticon.css">
+    <link rel="stylesheet" href="css/style.css">
+	<script>
+		window.onload = function() {
+			getUserNickname();
+			const cookieValue = getToken();
+			  if (cookieValue== "") {
+				document.getElementById("main-item-signup").style.display = "inline";
+				document.getElementById("main-item-welcome").style.display = "none";
+				document.getElementById("main-item-logout").style.display = "none";
+				document.getElementById("main-item-login").style.display = "inline";
+				document.getElementById("main-item-users").style.display = "none";
+			  }  else {
+				document.getElementById("main-item-signup").style.display = "none";
+				document.getElementById("main-item-welcome").style.display = "inline";
+				document.getElementById("main-item-logout").style.display = "inline";
+				document.getElementById("main-item-login").style.display = "none";
+				document.getElementById("main-item-users").style.display = "none";
+			  }
+	
+			  getIsAdmin().then(isAdmin => {
+				if (isAdmin === true) {
+				  document.getElementById("main-item-users").style.display = "inline";
+				}
+			  });
+		  };
+		function signup() {
+
+			let username = $('#username').val();
+			let password = $('#password').val();
+			let password_ck = $('#password_ck').val();
+			let nickname = $('#nickname').val();
+
+			const regex1 = /^[a-z0-9]{4,10}$/;
+			const regex2 = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,15}$/;
+		  
+	  
+			if (username == '') {
+			  alert('ID를 입력해주세요');
+			  return;
+			} else if(password == '') {
+			  alert('비밀번호를 입력해주세요');
+			  return;
+			} else if(nickname == '') {
+			  alert('닉네임를 입력해주세요');
+			  return;
+			} else if(password != password_ck) {
+				alert('비밀번호가 확인과 일치하지 않습니다')
+			  return;
+			} else if(!regex1.test(username)) {
+				alert('아이디는 영문 숫자로 4~10자리로 입력해주세요')
+				return;
+			} else if(!regex2.test(password)) {
+				alert('비밀번호는 영문 숫자 특수문자로 8~15자리로 입력해주세요')
+				return;
+			}
+	  
+			var settings = {
+			  "url": "http://localhost:8080/users/signup",
+			  "method": "POST",
+			  "timeout": 0,
+			  "headers": {
+				"Content-Type": "application/json"
+			  },
+			  "data": JSON.stringify({
+				"username": username,
+				"password": password,
+				"nickname": nickname
+			  }),
+			};
+			
+			$.ajax(settings).done(function (response,status) {
+			  if(response == 'success') {
+				alert("회원가입이 성공했습니다.")
+				window.location.href = 'http://127.0.0.1:5501/UserLogin.html';
+			  } else {
+				alert("회원가입이 완료되지 않았습니다 다시 시도해주세요.")
+			  }
+			});
+		  }
+	</script>
+	
+  </head>
+  <body>
+
+	<div class="wrap">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 d-flex align-items-center">
+				</div>
+				<div class="col-md-6 d-flex justify-content-md-end">
+					<div class="social-media">
+					<p class="mb-0 d-flex">
+						<a href="UserLogin.html"  id="main-item-login"><span class="fa fa-dribbble">LogIn<i class="sr-only"></i></span></a>
+						<a href="UserSignup.html" id="main-item-signup"><span class="fa fa-dribbble">SignUp<i class="sr-only"></i></span></a>
+			<a onclick="logout()" id="main-item-logout"><span class="fa fa-dribbble">로그아웃<i class="sr-only"></i></span></a>
+						<a href="MyProfile.html" id="main-item-welcome"><span class="fa fa-dribbble">님 환영합니다.<i class="sr-only"></i></span></a>
+			<a href="GetUsers.html" id="main-item-users"><span class="fa fa-dribbble">유저전체조회(관리자전용)<i class="sr-only"></i></span></a>  
+		  </p>
+			</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container">
+	    	<a class="navbar-brand" href="index.html"><span class="flaticon-pawprint-1 mr-2"></span>Petfam</a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="fa fa-bars"></span> Menu
+	      </button>
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	        	<li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="blog.html" class="nav-link">My Pet</a></li>
+	          <li class="nav-item"><a href="pricing.html" class="nav-link">Small Talk</a></li>
+	          <li class="nav-item"><a href="contact.html" class="nav-link">Q&A</a></li>
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+    <!-- END nav -->
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('images/bg_2.jpg');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-end">
+          <div class="col-md-9 ftco-animate pb-5">
+          	<p class="breadcrumbs mb-2"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span></p>
+            <h1 class="mb-0 bread">회원가입</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ftco-section bg-light">
+			<div class="container">
+							<div class="row no-gutters">
+								<div class="col-md-7">
+									<div class="contact-wrap w-100 p-md-5 p-4">
+										<h3 class="mb-4">회원정보</h3>
+									
+											<div class="row">
+												<div class="col-md-7">
+													<div class="form-group">
+														<label class="label" for="name">아이디</label>
+														<input type="text" class="form-control" name="name" id="username" placeholder="아이디"> <small>아이디는 영문숫자로 4~10자리로 만들어주세요.</small>
+														<div> <button onclick="ck_id()">아이디 중복확인</button></div>
+													</div>
+												</div>												
+												<div class="col-md-7"> 
+												<div class="form-group">
+														<label class="label" for="email">닉네임</label>
+														<input type="text" class="form-control" name="nname" id="nickname" placeholder="닉네임"> 
+														<div><button onclick="ck_nickname()">닉네임 중복확인</button></div>
+													</div>
+												</div>
+												<div class="col-md-8"> 
+													<div class="form-group">
+														<label class="label" for="email">비밀번호</label>
+														<input type="password" class="form-control" name="email" id="password" placeholder="비밀번호"> <small>비밀번호는 영문,숫자,특수문자로 8~15자리로 만들어주세요.</small>
+													</div>
+												</div>
+												<div class="col-md-8"> 
+													<div class="form-group">
+														<label class="label" for="email">비밀번호확인</label>
+														<input type="password" class="form-control" name="email" id="password_ck" placeholder="비밀번호확인">
+													</div>
+												</div>
+
+												<div class="col-md-12">
+													<div class="form-group">
+														<button type="submit" class="btn btn-primary" onclick="signup()">가입하기</button>
+														<div class="submitting"></div>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<a type="submit" class="btn btn-primary" href="AdminSignup.html" style="margin-top: 20px;">관리자회원가입(이동)</a>
+														<div class="submitting"></div>
+										
+													</div>
+												</div>
+											</div>
+										
+									</div>
+								</div>
+								<div class="col-md-5 d-flex align-items-stretch">
+									<div class="info-wrap w-100 p-5 img" style="background-image: url(images/img.jpg);">
+				          </div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+
+    
+  
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/jquery.easing.1.3.js"></script>
+  <script src="js/jquery.waypoints.min.js"></script>
+  <script src="js/jquery.stellar.min.js"></script>
+  <script src="js/jquery.animateNumber.min.js"></script>
+  <script src="js/bootstrap-datepicker.js"></script>
+  <script src="js/jquery.timepicker.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/scrollax.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+  <script src="js/google-map.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/user.js"></script>
+
+
+
+  </body>
+  
+</html>
