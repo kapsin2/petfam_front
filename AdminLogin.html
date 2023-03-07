@@ -67,7 +67,7 @@
 		
 			$.ajax({
 			  type: "POST",
-			  url: "http://localhost:8080/users/admin/signin",
+			  url: "http://43.200.238.79:8080/users/admin/signin",
 			  contentType: "application/json",
 			  data: JSON.stringify({username: username, password: password, adminKey: adminKey}),
 			  success: function (response, status, xhr) {
@@ -80,7 +80,7 @@
 					  'Refresh_authorization' + '=' + xhr.getResponseHeader('Refresh_authorization') + ';path=/';
 		
 					  
-				  window.location.href = 'http://127.0.0.1:5501/index.html';
+				  window.location.href = 'http://petfam.netlify.app:5501/index.html';
 				} else {
 				  alert('로그인에 실패하셨습니다. 다시 로그인해 주세요.')
 				  window.location.reload();

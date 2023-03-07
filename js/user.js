@@ -1,5 +1,5 @@
 function getUserNickname() {
-  sendAuthorizedRequest("http://localhost:8080/users/profiles", "GET", function (response) {
+  sendAuthorizedRequest("http://43.200.238.79:8080/users/profiles", "GET", function (response) {
     console.log(response);
     console.log(response.nickname);
     $('#main-item-welcome').empty();
@@ -15,7 +15,7 @@ function getUserNickname() {
 
 function getIsAdmin() {
   return new Promise((resolve, reject) => {
-    sendAuthorizedRequest("http://localhost:8080/users/profiles", "GET", function (response) {
+    sendAuthorizedRequest("http://43.200.238.79:8080/users/profiles", "GET", function (response) {
       if (response.role === "ROLE_ADMIN") {
         resolve(true);
       } else {
@@ -27,7 +27,7 @@ function getIsAdmin() {
 
 
 function getUserMe() {
-  sendAuthorizedRequest("http://localhost:8080/users/profiles", "GET", function (response) {
+  sendAuthorizedRequest("http://43.200.238.79:8080/users/profiles", "GET", function (response) {
     console.log(response);
     $('#my-profile-nickname').empty();
     $('#my-profile-nickname').append(response.nickname);
@@ -41,7 +41,7 @@ function getUserMe() {
 function getUser() {
   const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
-  sendAuthorizedRequest("http://localhost:8080/users/profiles/"+id, "GET", function (response) {
+  sendAuthorizedRequest("http://43.200.238.79:8080/users/profiles/"+id, "GET", function (response) {
     console.log(response);
     console.log(response.nickname);
     $('#card-content1-user').empty();
@@ -58,7 +58,7 @@ function logout() {
   const auth = getToken();
   const auth_r = getRefreshToken();
   var settings = {
-    "url": "http://localhost:8080/users/signout",
+    "url": "http://43.200.238.79:8080/users/signout",
     "method": "POST",
     "timeout": 0,
     "beforeSend": function(xhr) {
@@ -71,7 +71,7 @@ function logout() {
     console.log(response);
     if (response == 'success'){
       alert('로그아웃')
-      window.location.href = 'http://127.0.0.1:5501/index.html';
+      window.location.href = 'http://petfam.netlify.app:5501/index.html';
       document.cookie =
               'Authorization' + '=' + "" + ';path=/'; 
         document.cookie = 
@@ -95,7 +95,7 @@ function profileUpdate() {
 
     console.log(image);
     var settings = {
-      "url": "http://localhost:8080/users/profiles",
+      "url": "http://43.200.238.79:8080/users/profiles",
       "method": "PATCH",
       "timeout": 0,
       "headers": {
@@ -115,7 +115,7 @@ function profileUpdate() {
       console.log(response);
       if (response == "success"){
         alert("프로필 수정 완료")
-        window.location.href = 'http://127.0.0.1:5501/MyProfile.html';
+        window.location.href = 'http://petfam.netlify.app:5501/MyProfile.html';
       }
     });
   })} else{
@@ -126,7 +126,7 @@ function profileUpdate() {
 
     console.log(image);
     var settings = {
-      "url": "http://localhost:8080/users/profiles",
+      "url": "http://43.200.238.79:8080/users/profiles",
       "method": "PATCH",
       "timeout": 0,
       "headers": {
@@ -146,7 +146,7 @@ function profileUpdate() {
       console.log(response);
       if (response == "success"){
         alert("프로필 수정 완료")
-        window.location.href = 'http://127.0.0.1:5501/MyProfile.html';
+        window.location.href = 'http://petfam.netlify.app:5501/MyProfile.html';
       }
     });
   }
@@ -163,7 +163,7 @@ function uploadImage() {
     formData.append("file", file);
 
     var settings = {
-      "url": "http://localhost:8080/upload",
+      "url": "http://43.200.238.79:8080/upload",
       "method": "POST",
       "timeout": 0,
       "headers": {},
@@ -188,7 +188,7 @@ function uploadImage() {
 
 
 function getAllUsers() {
-  sendAuthorizedRequest("http://localhost:8080/admin/users", "GET", function (response) {
+  sendAuthorizedRequest("http://43.200.238.79:8080/admin/users", "GET", function (response) {
     console.log(response);
     let rows = response['content']
     for (let i = 0; i < rows.length; i++) {
@@ -257,7 +257,7 @@ function sendAuthorizedRequest(url, method, callback) {
       if (jqXHR.status === 403) {
         const refresh = getRefreshToken();
         var refreshSettings = {
-          "url": "http://localhost:8080/users/refresh",
+          "url": "http://43.200.238.79:8080/users/refresh",
           "method": "POST",
           "timeout": 0,
           "beforeSend": function(xhr) {
@@ -281,7 +281,7 @@ function ck_id() {
   const id = $('#username').val();
 
 $.ajax({
-  url: 'http://localhost:8080/users/id',
+  url: 'http://43.200.238.79:8080/users/id',
   method: 'POST',
   contentType: 'application/json',
   data: JSON.stringify({
@@ -303,7 +303,7 @@ function ck_nickname() {
   const nickname = $('#nickname').val();
 
   $.ajax({
-    url: 'http://localhost:8080/users/nickname',
+    url: 'http://43.200.238.79:8080/users/nickname',
     method: 'POST',
     contentType: 'application/json',
     data: JSON.stringify({

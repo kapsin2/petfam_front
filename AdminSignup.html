@@ -79,7 +79,7 @@
 			}
 	  
 			var settings = {
-			  "url": "http://localhost:8080/users/admin/signup",
+			  "url": "http://43.200.238.79:8080/users/admin/signup",
 			  "method": "POST",
 			  "timeout": 0,
 			  "headers": {
@@ -96,7 +96,7 @@
 			$.ajax(settings).done(function (response,status) {
 			  if(response == 'success') {
 				alert("회원가입이 성공했습니다.")
-				window.location.href = 'http://127.0.0.1:5501/adminlogin.html';
+				window.location.href = 'http://petfam.netlify.app:5501/adminlogin.html';
 			  } else {
 				alert("회원가입이 완료되지 않았습니다 다시 시도해주세요.")
 			  }
